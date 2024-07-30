@@ -58,7 +58,40 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-
+	string s;
+	cin >> s;
+	int n = s.size();
+	vector<char>a(n);
+	for (int i = 0; i < n; i++) {
+		a[i] = s[i];
+	}
+	debug(a);
+	int l = -1;
+	int r = -1;
+	bool ok = false;
+	for (int i = 0; i < n - 1; i++) {
+		debug(a[i]);
+		debug(a[i + 1]);
+		if (a[i] == a[i + 1]) {
+			l = i;
+			r = i + 1;
+			ok = true;
+			break;
+		}
+	}
+	if (!ok) {
+		cout << s;
+		if (a[n - 1] == 'a')cout << 'b' << nl;
+		else cout << char(a[n - 1] - 1) << nl;
+		return;
+	}
+	debug(l);
+	debug(r);
+	for (int i = 0; i <= l; i++)cout << a[i];
+	if (a[l] == 'a')cout << 'b';
+	else cout << char(a[l] - 1);
+	for (int i = r; i < n; i++)cout << a[i];
+	cout << nl;
 }
 int main()
 {
