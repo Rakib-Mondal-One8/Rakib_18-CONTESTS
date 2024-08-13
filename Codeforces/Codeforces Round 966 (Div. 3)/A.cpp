@@ -58,12 +58,30 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	ll xc, yc, k;
-	cin >> xc >> yc >> k;
-	for (int i = 0; i < k - k % 2; i++) {
-		cout << xc - (i & 1 ? 1 : -1) *(i / 2 + 1) << " " << yc << nl;
+	string s;
+	cin >> s;
+	int n = s.size();
+	int val = 0;
+	if (s[0] != '1' || s[1] != '0') {
+		No;
+		return;
 	}
-	if (k & 1)cout << xc << " " << yc << nl;
+	int r = 2;
+	while (r < n) {
+		val = val * 10 + (s[r] - '0');
+		r++;
+	}
+	if (val < 2) {
+		No;
+		return;
+	}
+	int cnt = 0;
+	while (val > 0) {
+		val /= 10;
+		cnt++;
+	}
+	if (cnt == n - 2)Yes;
+	else No;
 }
 int main()
 {

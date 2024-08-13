@@ -58,12 +58,40 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	ll xc, yc, k;
-	cin >> xc >> yc >> k;
-	for (int i = 0; i < k - k % 2; i++) {
-		cout << xc - (i & 1 ? 1 : -1) *(i / 2 + 1) << " " << yc << nl;
+	ll n;
+	cin >> n;
+	vector<ll>a(n);
+	vector<ll>pref(n);
+	loop(i, 0, n - 1)cin >> a[i];
+	pref[0] = a[0];
+	for (ll i = 1; i < n; i++)pref[i] = pref[i - 1] + a[i];
+	string s;
+	cin >> s;
+	deque<ll>l, r;
+	for (ll i = 0; i < n; i++) {
+		if (s[i] == 'L')l.push_back(i);
+		else r.push_back(i);
 	}
-	if (k & 1)cout << xc << " " << yc << nl;
+	vector<pll>res;
+	while (!l.empty() && !r.empty()) {
+		if (l.front() < r.back()) {
+			res.push_back({l.front(), r.back()});
+			l.pop_front();
+			r.pop_back();
+		}
+		else break;
+	}
+	debug(res);
+	ll ans = 0;
+	for (auto &p : res) {
+		ll lft = p.first;
+		ll rgt = p.second;
+		if (lft != 0) {
+			ans += (pref[rgt] - pref[lft - 1]);
+		}
+		else ans += pref[rgt];
+	}
+	cout << ans << nl;
 }
 int main()
 {

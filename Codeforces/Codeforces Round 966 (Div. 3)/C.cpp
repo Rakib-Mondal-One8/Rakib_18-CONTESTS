@@ -58,12 +58,35 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	ll xc, yc, k;
-	cin >> xc >> yc >> k;
-	for (int i = 0; i < k - k % 2; i++) {
-		cout << xc - (i & 1 ? 1 : -1) *(i / 2 + 1) << " " << yc << nl;
+	int n;
+	cin >> n;
+	map<int, set<int>>mp;
+	loop(i, 1, n) {
+		int x;
+		cin >> x;
+		mp[x].insert(i);
 	}
-	if (k & 1)cout << xc << " " << yc << nl;
+	set<set<int>>tmp;
+	for (auto&x : mp)tmp.insert(x.second);
+
+	debug(mp);
+	int m;
+	cin >> m;
+	while (m--) {
+		string s;
+		cin >> s;
+		map<char, set<int>>track;
+		for (int i = 0; i < s.size(); i++) {
+			track[s[i]].insert(i + 1);
+		}
+		set<set<int>>res;
+		for (auto &x : track) res.insert(x.second);
+		if (tmp == res)Yes;
+		else No;
+		debug(tmp);
+		debug(res);
+
+	}
 }
 int main()
 {

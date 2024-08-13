@@ -58,12 +58,62 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	ll xc, yc, k;
-	cin >> xc >> yc >> k;
-	for (int i = 0; i < k - k % 2; i++) {
-		cout << xc - (i & 1 ? 1 : -1) *(i / 2 + 1) << " " << yc << nl;
+	int n;
+	cin >> n;
+	vector<int>a(n), b(n);
+	vector<bool>f1(n + 1, false), f2(n + 1, false);
+	loop(i, 0, n - 1)cin >> a[i];
+	loop(i, 0, n - 1)cin >> b[i];
+	int l1 = 0, r1 = n - 1;
+	int l2 = 0, r2 = n - 1;
+	while (l1 < r1 && l2 < r2) {
+		int x1 = a[l1], x2 = a[r1];
+		if (f2[x1]) {
+			r1--;
+			f1[x1] = true;
+		}
+		else if (f2[x2]) {
+			l1++;
+			f1[x1] = true;
+		}
+		else if (b[l2] != x1 && b[r2] != x1) {
+			l1++;
+			f1[x1] = true;
+		}
+		else if (b[l2] != x2 && b[r2] != x2) {
+			r1--;
+			f1[x2] = true;
+		}
+		else {
+			l1++;
+			f1[x1] = true;
+		}
+
+		int y1 = b[l2], y2 = b[r2];
+		if (f1[y1]) {
+			l2++;
+			f2[y1] = true;
+		}
+		else if (f1[y2]) {
+			r2--;
+			f2[y2] = true;
+		}
+		else if (a[l1] != y1 && a[r1] != y1) {
+			l2++;
+			f2[y1] = true;
+		}
+		else if (a[l1] != y2 && a[r1] != y2) {
+			r2--;
+			f2[y2] = true;
+		}
+		else {
+			l2++;
+			f2[y1] = true;
+		}
+
 	}
-	if (k & 1)cout << xc << " " << yc << nl;
+	if (a[l1] != b[l2])cout << "Alice" << nl;
+	else cout << "Bob\n";
 }
 int main()
 {
