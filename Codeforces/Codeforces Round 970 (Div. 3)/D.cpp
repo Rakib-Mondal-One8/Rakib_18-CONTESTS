@@ -61,7 +61,32 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 
 void solve()
 {
-
+	int n;
+	cin >> n;
+	vector<int>a(n + 1), vis(n + 1, 0), b(n + 1, 0);
+	loop(i, 1, n)cin >> a[i];
+	string s;
+	cin >> s;
+	loop(i, 1, n) {
+		int j = i, cnt = 0;
+		while (vis[j] != 1) {
+			if (vis[j] == 2) {
+				cnt += b[j];
+				break;
+			}
+			vis[j] = 1;
+			if (s[j - 1] == '0')cnt++;
+			j = a[j];
+		}
+		b[i] = cnt;
+		while (vis[j] != 2) {
+			vis[j] = 2;
+			b[j] = cnt;
+			j = a[j];
+		}
+	}
+	loop(i, 1, n)cout << b[i] << " ";
+	cout << nl;
 }
 int main()
 {
