@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-/*Problem Link -> */
+/*Problem Link -> https://codeforces.com/contest/2024/problem/B*/
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
@@ -60,29 +60,24 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	int n, k;
+	ll n, k;
 	cin >> n >> k;
-	vector<int>a(n);
+	vector<ll>a(n);
 	loop(i, 0, n - 1)cin >> a[i];
 	sort(a.begin(), a.end());
 	debug(a);
-	int hit = 0;
-	int cur = 0;
-	int cnt = 0;
-	int i = 0;
-	while (i < n) {
-		if (cur >= k)break;
-		while ((a[i] - cnt) == 0) {
-			i++;
-			hit++;
-		}
-		cnt++;
-		cur += (n - i);
-		hit += (n - i);
+	ll ans = k;
+	ll cnt = 0;
+	for (int i = 0; i < n; i++) {
+		a[i] -= cnt;
+		k -= min(k, (n - i) * a[i]);
 
+		if (k == 0)break;
+		else ans++;
+
+		cnt += a[i];
 	}
-	cout << hit << nl;
-
+	cout << ans << nl;
 }
 int main()
 {
