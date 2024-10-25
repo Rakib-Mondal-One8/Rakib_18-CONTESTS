@@ -60,7 +60,24 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-
+	int n;
+	cin >> n;
+	vector<ll>a(n);
+	loop(i, 0, n - 1)cin >> a[i];
+	set<ll>s;
+	ll sum = 0;
+	int ans  = 0;
+	loop(i, 0, n - 1) {
+		if (s.empty())s.insert(0); // if there is a zero at first index
+		sum += a[i];
+		if (s.find(sum) != s.end()) {
+			ans++;
+			sum = 0;
+			s.clear();
+		}
+		else s.insert(sum);
+	}
+	cout << ans << nl;
 }
 int main()
 {
