@@ -60,21 +60,14 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	int n;
-	cin >> n;
-	vector<ll>a(n);
-	loop(i, 0, n - 1)cin >> a[i];
-	ll ans  = n;
-	loop(i, 0, n - 1) {
-		int cnt  = 0;
-		loop(j, i + 1, n - 1) {
-			if (a[j] > a[i])cnt++;
-		}
-		ans = min(ans, cnt + i);
-	}
+	ll n, m, r, c;
+	cin >> n >> m >> r >> c;
+	ll ans  = 0;
+	if (c < m)ans += (m - c);
+	ans += ((n - r) * (m + (m - 1LL)));
 	cout << ans << nl;
-}
 
+}
 int main()
 {
 	init_code();
