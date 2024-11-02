@@ -62,45 +62,21 @@ void solve()
 {
 	ll n, k;
 	cin >> n >> k;
-	if (isPrime(n) || (n == 1)) {
-		if (((n + 1) / 2) == k) {
-			cout << n << nl;
-			loop(i, 1, n) {
-				cout << i << " ";
-			}
-			cout << nl;
-		}
-		else cout << -1 << nl;
-		return;
+	if (n == 1) {
+		cout << 1 << nl;
+		cout << 1 << nl;
 	}
-	vector<ll>divs;
-	ll j = n;
-	for (ll i = 2; i <= ll(sqrt(j)); i++) {
-		if (j % i == 0) {
-			divs.push_back(i);
-			while (j % i == 0) {
-				j /= i;
-			}
-		}
+	else if (k == 1 || k == n)cout << -1 << nl;
+	else {
+		int sz = min(k - 1, n - k) * 2 + 1;
+		cout << sz << nl;
+
+		loop(i, 1, min(n - k, k - 1))cout << i << " ";
+		cout << k << " ";
+		loop(i, 1, min(n - k, k - 1))cout << i + k << " ";
+		cout << nl;
 	}
-	if (j > 1)divs.push_back(j);
-	debug(divs);
-	for (auto e : divs) {
-		vector<ll>mids;
-		ll len = n / e;
-		for (ll i = 1; i <= n; i += len) {
-			ll l = i, r = (len + i - 1);
-			ll m = (r + l) / 2;
-			mids.push_back(m);
-		}
-		int idx = mids.size() / 2;
-		if (mids[idx] == k) {
-			cout << e << nl;
-			for (int i = 1; i <= n; i += len)cout << i << " ";
-			cout << nl;
-			return;
-		}
-	}
+
 }
 int main()
 {
