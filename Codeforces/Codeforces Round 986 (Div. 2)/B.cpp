@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-/*Problem Link -> */
+/*Problem Link -> https://codeforces.com/contest/2028/problem/B*/
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
@@ -62,14 +62,14 @@ void solve()
 {
 	ll n, b, c;
 	cin >> n >> b >> c;
-	vector<ll>a;
-	loop(i, 0, n - 1) {
-		ll val = b * i + c;
-		a.push_back(val);
+	if (b == 0) {
+		if (c >= n)cout << n << nl;
+		else if ((c == n - 2) || (c == n - 1))cout << n - 1 << nl;
+		else cout << -1 << nl;
+		return;
 	}
-	loop(i, 0, a.size() - 1) {
-		if (a[i] == n - 1)cout << n - i + 1 << nl;
-	}
+	ll ans = n - max((n - c + b - 1) / b, 0LL);
+	cout << ans << nl;
 }
 int main()
 {
