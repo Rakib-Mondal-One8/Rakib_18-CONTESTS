@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-/*Problem Link -> */
+/*Problem Link -> https://codeforces.com/contest/2037/problem/D*/
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
@@ -60,7 +60,29 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
+	int n, m, l;
+	cin >> n >> m >> l;
 
+	vector<pi>h(n), p_up(m);
+	loop(i, 0, n - 1)cin >> h[i].first >> h[i].second;
+	loop(i, 0, m - 1)cin >> p_up[i].first >> p_up[i].second;
+
+	int cur_p = 1, r = 0, cnt = 0;
+	multiset<int>s;
+	loop(i, 0, n - 1) {
+		while (r < m && p_up[r].first < h[i].first)
+			s.insert(p_up[r++].second);
+
+		int gap = h[i].second - h[i].first + 2;
+		while (!s.empty() && cur_p < gap)
+			cur_p += *s.rbegin(), s.erase(prev(s.end())), cnt++;
+
+		if (cur_p < gap) {
+			cout << -1 << nl;
+			return;
+		}
+	}
+	cout << cnt << nl;
 }
 int main()
 {
