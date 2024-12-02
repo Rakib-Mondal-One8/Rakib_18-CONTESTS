@@ -60,7 +60,77 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
+	int n;
+	cin >> n;
 
+	vector<int>a(n);
+	loop(i, 0, n - 1)cin >> a[i];
+
+	set<int>zero, two, one;
+	loop(i, 0, n - 1) {
+		if (a[i] == 0)zero.insert(i);
+		else if (a[i] == 1)one.insert(i);
+		else two.insert(i);
+	}
+	vector<int>tmp = a;
+	sort(tmp.begin(), tmp.end());
+
+	vector<pi>ans;
+	loop(i, 0, n - 1) {
+		if (a[i] == tmp[i])continue;
+		if (a[i] == 1 && tmp[i] == 0) {
+			int idx = *zero.rbegin();
+			swap(a[idx], a[i]);
+			one.erase(i);
+			one.insert(idx);
+			zero.erase(idx);
+			zero.insert(i);
+
+			ans.push_back({idx, i});
+		}
+		else if (a[i] == 1 && tmp[i] ==  2) {
+			int idx = *two.rbegin();
+			swap(a[idx], a[i]);
+			one.erase(i);
+			one.insert(idx);
+			two.erase(idx);
+			two.insert(i);
+
+			ans.push_back({idx, i});
+		}
+		else if (a[i] == 2 && tmp[i] == 0) {
+			int idx = *one.rbegin();
+			swap(a[idx], a[i]);
+			one.erase(idx);
+			one.insert(i);
+			two.erase(i);
+			two.insert(idx);
+
+			ans.push_back({idx, i});
+
+			idx = *zero.rbegin();
+			swap(a[idx], a[i]);
+			one.erase(i);
+			one.insert(idx);
+			zero.erase(idx);
+			zero.insert(i);
+
+			ans.push_back({idx, i});
+		}
+		else if (a[i] == 2 && tmp[i] == 1) {
+			int idx = *one.rbegin();
+			swap(a[idx], a[i]);
+			one.erase(idx);
+			one.insert(i);
+			two.erase(i);
+			two.insert(idx);
+
+			ans.push_back({idx, i});
+		}
+	}
+
+	cout << ans.size() << nl;
+	for (auto [x, y] : ans)cout << x + 1 << " " << y + 1 << nl;
 }
 int main()
 {

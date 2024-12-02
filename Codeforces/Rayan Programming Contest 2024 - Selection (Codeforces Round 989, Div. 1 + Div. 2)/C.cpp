@@ -60,7 +60,65 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
+	int n, m;
+	cin >> n >> m;
 
+	vector<string>grid(n);
+	loop(i, 0, n - 1)cin >> grid[i];
+
+	if (n == 1 && m == 1) {
+		cout << 0 << nl;
+		return;
+	}
+	vector<vector<int>>vis(n, vector<int>(m, 0));
+	queue<pi>q;
+	loop(i, 0, n - 1) {
+		loop(j, 0, m - 1) {
+			if (i == 0 && grid[i][j] == 'U')q.push({i, j}), vis[i][j] = 1;
+			if (i == n - 1 && grid[i][j] == 'D')q.push({i, j}), vis[i][j] = 1;
+			if (j == 0 && grid[i][j] == 'L')q.push({i, j}), vis[i][j] = 1;
+			if (j == m - 1 && grid[i][j] == 'R')q.push({i, j}), vis[i][j] = 1;
+		}
+	}
+
+	while (!q.empty()) {
+		auto [i, j] = q.front();
+		q.pop();
+
+		if (i - 1 >= 0 && !vis[i - 1][j] && grid[i - 1][j] == 'D')
+			q.push({i - 1, j}), vis[i - 1][j] = 1;
+		if (i + 1 < n && !vis[i + 1][j] && grid[i + 1][j] == 'U')
+			q.push({i + 1, j}), vis[i + 1][j] = 1;
+		if (j - 1 >= 0 && !vis[i][j - 1] && grid[i][j - 1] == 'R')
+			q.push({i, j - 1}), vis[i][j - 1] = 1;
+		if (j + 1 < m && !vis[i][j + 1] && grid[i][j + 1] == 'L')
+			q.push({i, j + 1}), vis[i][j + 1] = 1;
+
+		auto check = [&](int ii, int jj) {
+			if (ii < 0 || ii >= n || jj < 0 || jj >= m)return;
+
+			if (vis[ii][jj] || grid[ii][jj] != '?')return;
+
+			if (ii - 1 >= 0 && !vis[ii - 1][jj])return;
+
+			if (ii + 1 < n && !vis[ii + 1][jj])return;
+
+			if (jj - 1 >= 0 && !vis[ii][jj - 1])return;
+
+			if (jj + 1 < m && !vis[ii][jj + 1])return;
+
+			vis[ii][jj] = 1;
+			return;
+		};
+
+		check(i - 1, j);
+		check(i + 1, j);
+		check(i, j - 1);
+		check(i, j + 1);
+	}
+	int ans = 0;
+	loop(i, 0, n - 1)loop(j, 0, m - 1)if (!vis[i][j])ans++;
+	cout << ans << nl;
 }
 int main()
 {
