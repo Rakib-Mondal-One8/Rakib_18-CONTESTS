@@ -67,7 +67,7 @@ void solve()
 	if (d % 3 == 0 || n >= 3)cout << 3 << " ";
 	if (d % 5 == 0)cout << 5 << " ";
 	if (d % 7 == 0 || n >= 3)cout << 7 << " ";
-	if (n >= 6 || (d % 3 == 0 && n >= 3) || d % 9 == 0)cout << 9 << " ";
+	if (n >= 4 || (d % 3 == 0 && n >= 3) || d % 9 == 0)cout << 9 << " ";
 	cout << nl;
 }
 int main()

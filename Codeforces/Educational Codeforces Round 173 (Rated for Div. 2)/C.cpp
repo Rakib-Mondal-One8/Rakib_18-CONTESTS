@@ -58,9 +58,85 @@ ll lcm(ll a, ll b) {return (a / __gcd(a, b)) * b;}
 int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 2)return n + 1; return 0;}
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+ll kadane(const vector<ll>& arr) {
+	if (arr.empty())return 0;
+	ll maxSum = arr[0];
+	ll currentSum = arr[0];
+
+	for (ll i = 1; i < arr.size(); i++) {
+		currentSum = max(arr[i], currentSum + arr[i]);
+		maxSum = max(maxSum, currentSum);
+	}
+
+	return maxSum;
+}
 void solve()
 {
+	int n;
+	cin >> n;
+	vector<ll>a(n);
+	for (auto &i : a)cin >> i;
 
+	ll x, idx = -1;
+	loop(i, 0, n - 1) {
+		if (a[i] != -1 && a[i] != 1) {
+			x = a[i];
+			idx = i;
+		}
+	}
+	set<ll>lsuf, rpref;
+	set<ll>ans;
+	lsuf.insert(0);
+	rpref.insert(0);
+	if (idx != -1) {
+		ll sum = 0;
+		loop(i, idx + 1, n - 1) {
+			sum += a[i];
+			rpref.insert(sum);
+		}
+		sum = 0;
+		for (ll i = idx - 1; i >= 0; i--) {
+			sum += a[i];
+			lsuf.insert(sum);
+		}
+
+		ll l1 = (*(lsuf.begin())) + (*(rpref.begin())) + x;
+		ll r1 = (*(lsuf.rbegin())) + (*(rpref.rbegin())) + x;
+
+		vector<ll>v1, v2, v3, v4;
+		for (int i = 0; i < idx; i++) {
+			v1.push_back(a[i]);
+			v2.push_back(-1LL * a[i]);
+		}
+		for (int i = idx + 1; i < n; i++) {
+			v3.push_back(a[i]);
+			v4.push_back(-1LL * a[i]);
+		}
+
+		ll r2 = kadane(v1);
+		ll l2 = -1ll * kadane(v2);
+
+		ll r3 = kadane(v3);
+		ll l3 = -1LL * kadane(v4);
+
+		for (ll i = l1; i <= r1; i++)ans.insert(i);
+		loop(i, l2, r2)ans.insert(i);
+		loop(i, l3, r3)ans.insert(i);
+
+		ans.insert(0);
+		cout << ans.size() << nl;
+		for (auto i : ans)cout << i << " ";
+		cout << nl;
+		debug(1);
+	}
+	else {
+		ll l1 = kadane(a);
+		for (auto &i : a)i = -i;
+		ll r1 = -1LL * kadane(a);
+		cout << l1 - r1 + 1 << nl;
+		loop(i, r1, l1)cout << i << " ";
+		cout << nl;
+	}
 }
 int main()
 {
