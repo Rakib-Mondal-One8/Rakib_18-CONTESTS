@@ -133,8 +133,10 @@ void solve()
 		ll l1 = kadane(a);
 		for (auto &i : a)i = -i;
 		ll r1 = -1LL * kadane(a);
-		cout << l1 - r1 + 1 << nl;
-		loop(i, r1, l1)cout << i << " ";
+		ans.insert(0);
+		loop(i, r1, l1)ans.insert(i);
+		cout << ans.size() << nl;
+		for (auto i : ans)cout << i << " ";
 		cout << nl;
 	}
 }
