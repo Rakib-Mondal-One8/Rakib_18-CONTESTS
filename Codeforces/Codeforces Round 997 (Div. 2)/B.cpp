@@ -64,35 +64,21 @@ void solve()
 	cin >> n;
 
 	vector<string>g(n + 1);
-	for (int i = 1; i <= n; i++)cin >> g[i];
-	debug(g);
-	vector<int>ans(300 + 2, -1);
-	int idx = 100;
-	ans[idx] = 1;
-	set<pi>s;
-	s.insert({idx, 1});
-	for (int i = 2; i <= n; i++) {
-		debug(ans);
-		idx = (*s.begin()).first;
-		while (g[i][ans[idx]] == '1' && i > ans[idx])idx++;
-		while (g[i][ans[idx]] == '1' && i < ans[idx])idx--;
-		if (ans[idx] == -1) {
-			ans[idx] = i;
-			s.insert({idx, i});
+	loop(i, 1, n)cin >> g[i];
+
+	vector<int>a(n + 1);
+	loop(i, 1, n)a[i] = i;
+
+	loop(i, 2, n) {
+		int cur = a[i];
+		int j = i - 1;
+		while (j >= 1 && g[cur][a[j] - 1] == '0') {
+			a[j + 1] = a[j];
+			j--;
 		}
-		else {
-			int cur = ans[idx];
-			int next = ans[idx + 1];
-			while (cur == -1) {
-				ans[idx + 1] = cur;
-				cur = next;
-				next = ans[idx + 2];
-			}
-			ans[idx] = i;
-			s.insert({idx, i});
-		}
+		a[j + 1] = cur;
 	}
-	for (auto i : ans)cout << i << " ";
+	loop(i, 1, n)cout << a[i] << " ";
 	cout << nl;
 }
 int main()

@@ -62,26 +62,20 @@ void solve()
 {
 	int stp, n;
 	cin >> stp >> n;
-	set<pi>s;
-	for (int i = ; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			s.insert({i, j});
-		}
-	}
-	int ans = 0;
-	for (int i = 0; i < stp; i++) {
-		int x, y;
-		cin >> x >> y;
-		debug(s);
-		for (auto p : s) {
-			if (s.count({p.first + x, p.second + y}) == 0) {
-				ans++;
-				s.insert({p.first + x, p.second + y});
-			}
-		}
 
+	int perimeter = 0;
+	loop(i, 1, stp)perimeter += (4 * n);
+
+	vector<pi>a(stp);
+	loop(i, 0, stp - 1)cin >> a[i].first >> a[i].second;
+	loop(i, 1, stp - 1) {
+		int h = n - a[i].second;
+		int w = n - a[i].first;
+
+		perimeter -= 2 * (h + w);
 	}
-	cout << ans << nl;
+	cout << perimeter << nl;
+
 }
 int main()
 {
