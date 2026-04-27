@@ -2,12 +2,14 @@
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 /*Problem Link -> */
-typedef long long ll;
+// typedef long long ll;
 typedef unsigned long long ull;
-typedef long double lld;
+// typedef long double lld;
+#define int long long
+#define double long double
 #define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
 #define pi pair<int, int>
-#define pll pair<ll, ll>
+// #define pll pair<ll, ll>
 #define Yes cout << "YES" << '\n'
 #define No cout << "NO" << '\n'
 #define nl '\n'
@@ -27,10 +29,10 @@ using pbdms = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statisti
 #define debug(x)
 #endif
 
-void _print(ll t) {cerr << t;}
+// void _print(int t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
-void _print(lld t) {cerr << t;}
+// void _print(lld t) {cerr << t;}
 void _print(double t) {cerr << t;}
 void _print(ull t) {cerr << t;}
 
@@ -51,52 +53,53 @@ void init_code() {
 	freopen("Error.txt", "w", stderr);
 #endif
 }
-const int mod = 1e9 + 7;
+// const int mod = 1e9 + 7;
 // const int mod = 998244353;
-// const long long mod = 1375927501846395853LL;
-bool isPrime(ll n) { if (n <= 1)return false; if (n <= 3)return true; if (n % 2 == 0 || n % 3 == 0)return false; for (ll i = 5; i * i <= n; i += 6) { if (n % i == 0 || n % (i + 2) == 0)return false; } return true; }
-ll lcm(ll a, ll b) { return (a / __gcd(a, b)) * b; }
+const long long mod = 1375927501846395853LL;
+bool isPrime(int n) { if (n <= 1)return false; if (n <= 3)return true; if (n % 2 == 0 || n % 3 == 0)return false; for (int i = 5; i * i <= n; i += 6) { if (n % i == 0 || n % (i + 2) == 0)return false; } return true; }
+int lcm(int a, int b) { return (a / __gcd(a, b)) * b; }
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	int n;
-	cin >> n;
+	int n, m;
+	cin >> n >> m;
 
-	vector<ll>a(2 * n + 1);
-	for (int i = 1; i <= 2 * n; i++)cin >> a[i];
+	vector<pi>vec(n);
+	for (int i = 0; i < n; i++)cin >> vec[i].first;
+	for (int i = 0; i < n; i++)cin >> vec[i].second;
 
-	sort(a.begin(), a.end());
+	sort(vec.begin(), vec.end(),
+	[&](pi p1, pi p2) {
+		return p1.first - p1.second < p2.first - p2.second;
+	});
 
-	vector<ll>arr1, arr2;
-	ll arr1Sum = 0, arr2Sum = 0;
+	vector<int>x(n), r(n);
+	for (int i = 0; i < n; i++)x[i] = vec[i].first;
+	for (int i = 0; i < n; i++)r[i] = vec[i].second;
 
-	for (int i = 2; i <= n; i++) {
-		arr1.push_back(a[i]);
-		arr1Sum += a[i];
-	}
-	for (int i = n + 1; i < 2 * n; i++) {
-		arr2.push_back(a[i]);
-		arr2Sum += a[i];
-	}
-	arr2.push_back(a[2 * n]);
-	arr2.push_back(a[1]);
-	ll missingVal = (arr2Sum - arr1Sum) + a[2 * n] + a[1];
-	arr1.push_back(missingVal);
 
-	for (int i = 1; i <= 2 * n + 1; i++) {
-		if (i % 2) {
-			cout << arr2.back() << " ";
-			arr2.pop_back();
+	int ans = 0;
+	int j = 0;
+	int x1 = -mod;
+	for (int i = 0; i < n; i++) {
+		x1 = max(x1, x[i] - r[i]);
+
+		while (x1 <= x[i] + r[i]) {
+			while (j < n - 1 && x[j + 1] - r[j + 1] <= x1)j++;
+			int y = 0;
+
+			for (int ii = i; ii <= j; ii++) {
+				y = max(y, (int)sqrt(r[ii] * r[ii] - (x[ii] - x1) * (x[ii] - x1)));
+			}
+
+			ans += 2 * y + 1;
+			x1++;
 		}
-		else {
-			cout << arr1.back() << " ";
-			arr1.pop_back();
-		}
 	}
-	cout << nl;
+	cout << ans << nl;
 }
-int main()
+int32_t main()
 {
 	init_code();
 	fastio();
