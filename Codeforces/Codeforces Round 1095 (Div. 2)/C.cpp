@@ -60,40 +60,42 @@ ll lcm(ll a, ll b) { return (a / __gcd(a, b)) * b; }
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	int n;
+	ll n;
 	cin >> n;
 
 	vector<int>a(n);
 	for (auto &x : a)cin >> x;
 
-	set<int>s;
-	vector<int>rem;
-	for (auto x : a) {
-		if (s.find(x) == s.end() && x < n) {
-			s.insert(x);
-		}
-		else rem.push_back(x);
-	}
-	sort(rem.begin(), rem.end());
-	debug(s);
-	debug(rem);
+	auto check = [&](const ll m) {
+		vector<bool>vis(m);
+		vector<int>b;
 
-	int required = 0;
-	for (int i = 0; i < rem.size(); i++) {
-		while (!s.empty() && s.find(required) != s.end())required++;
-		int CanMake = rem[i] % 2 == 0 ? rem[i] / 2 - 1 : rem[i] / 2;
-		debug(CanMake);
-		if (CanMake >= required) {
-			s.insert(required);
-			required++;
+		for (auto x : a) {
+			if (x < m && !vis[x])vis[x] = true;
+			else b.push_back((x - 1) / 2);
 		}
-		debug(s);
+
+		sort(b.begin(), b.end());
+		for (ll j = 0, id = 0; j < m; j++) {
+			if (vis[j])continue;
+
+			while (id < b.size() && b[id] < j)id++;
+			if (id == b.size())return false;
+
+			id++;
+		}
+		return true;
+	};
+
+	ll low = -1;
+	ll high = n + 2;
+
+	while (high - low > 1) {
+		const ll mid = low + (high - low) / 2;
+		if (check(mid))low = mid;
+		else high = mid;
 	}
-	int ans = 0;
-	for (auto x : s) {
-		if (x == ans)ans++;
-	}
-	cout << ans << nl;
+	cout << low << nl;
 }
 int main()
 {
