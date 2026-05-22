@@ -34,25 +34,35 @@ void RakibOne8()
 	cin >> s;
 	int n = sz(s);
 
-	int op1 = 0;
-	bool ok = false;
+	int ans = 0;
+	vector<int>pref(n + 1), suff(n + 1);
+
 	for (int i = 0; i < n; i++) {
-		if (s[i] == '1' || s[i] == '3')ok = true;
-
-		if (s[i] == '4')op1++;
-		if (ok && s[i] == '2')op1++;
+		if (s[i] == '4')ans++;
+		if (i > 0)pref[i] += pref[i - 1];
+		if (s[i] == '1' || s[i] == '3')pref[i]++;
 	}
 
-	int op2 = 0;
-	ok = false;
+
 	for (int i = n - 1; i >= 0; i--) {
-		if (s[i] == '2')ok = true;
-
-		if (s[i] == '4')op2++;
-		if (ok && ( s[i] == '1' || s[i] == '3'))op2++;
+		// if(s[i]=='4')ans++;
+		suff[i] += suff[i + 1];
+		if (s[i] == '2')suff[i]++;
 	}
 
-	cout << min(op1, op2) << nl;
+	int mn = INT_MAX;
+	for (int i = 0; i <= n; i++) {
+
+		if (i > 0)
+			mn = min(mn, pref[i - 1] + suff[i]);
+		else
+			mn = min(mn, suff[i]);
+	}
+
+	debug(mn);
+	cout << ans + mn << nl;
+
+
 
 }
 int32_t main()
