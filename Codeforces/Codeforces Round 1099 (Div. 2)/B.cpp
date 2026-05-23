@@ -42,30 +42,18 @@ void RakibOne8()
 	vector<int>a(n);
 	for (auto &x : a)cin >> x;
 
-	int mx = a[0];
-	bool ok = false;
 	int k = 0;
+
 	for (int i = 1; i < n; i++) {
-		if (i < n - 1 && ok && a[i] >= mx) {
-			k = a[i] - a[i - 1];
-			break;
-		}
-		if (ok) {
-			if (a[i] < a[i - 1]) {
-				debug(a)
-				cout << "NO" << nl;
-				return;
-			}
-		}
-		if (mx > a[i])ok = true;
-		mx = max(mx, a[i]);
+		if (a[i] < a[i - 1])k = max(k, a[i - 1] - a[i]);
 	}
 
-	for (int i = 1; i < n; i++)if (a[i] < a[i - 1])a[i] += k;
-	if (k == 0 || isSorted(a)) {
-		cout << "YES" << nl;
+	for (int i = 1; i < n; i++) {
+		if (a[i] < a[i - 1])a[i] += k;
 	}
-	else cout << "NO" << nl;
+
+	if (isSorted(a))cout << "Yes" << nl;
+	else cout << "No" << nl;
 
 }
 int32_t main()

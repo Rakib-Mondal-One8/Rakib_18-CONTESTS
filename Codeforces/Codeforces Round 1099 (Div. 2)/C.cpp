@@ -38,34 +38,37 @@ void RakibOne8()
 	vector<int>a(n);
 	for (auto &x : a)cin >> x;
 
-	int ans = 0;
-	for (int i = 1; i < n; i++) {
-		int mx = max(a[i], a[i - 1]);
-		int mn = min(a[i], a[i - 1]);
+	unordered_map<int, int>mp1, mp2;
 
-		while (mx != mn) {
-			if (mx - mn == 1 && mn % 2 == 1) {
-				ans += 1;
-				mn += 1;
+	for (auto x : a) {
+		int cnt = 0;
+		mp1[x]++;
+		mp2[x] += cnt;
+		if (x == 1) {
+			mp1[2] += 1;
+			mp2[2] += 1;
+			continue;
+		}
+		while (x > 1) {
+			if (x % 2) {
+				x += 1;
 			}
 			else {
-				if (mx % 2 == 0) {
-					ans += 1;
-					mx /= 2;
-				}
-				else {
-					mx += 1;
-					mx /= 2;
-					ans += 2;
-				}
+				x /= 2;
 			}
-			mx = max(mx, mn);
-			mn = min(mx, mn);
+			cnt++;
+			mp1[x]++;
+			mp2[x] += cnt;
 		}
-		a[i] = mn;
-		a[i - 1] = mn;
 	}
-	debug(a);
+
+	debug(mp1, mp2);
+	int ans = INT_MAX;
+	for (auto &[key, val] : mp1) {
+		if (val == n) {
+			ans = min(ans, mp2[key]);
+		}
+	}
 	cout << ans << nl;
 }
 int32_t main()
