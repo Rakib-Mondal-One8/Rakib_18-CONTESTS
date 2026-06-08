@@ -35,59 +35,52 @@ void RakibOne8()
 	int n;
 	cin >> n;
 
-	vector<int>a(n + 1);
+	vector<int>a(n);
 
 	for (int i = 0; i < n; i++)cin >> a[i];
 
+
 	for (int i = 0; i < n; i++) {
+		vector<int>prefixMax(n - 1);
+		vector<int>suffixMax(n - 1);
 
-		vector<int>res(n, -1);
-		res[i] = 0;
-
-		int right = n;
-		if (i + 1 == n) {
-			res[0] = a[i];
+		prefixMax[0] = a[i];
+		int index = (i + 1) % n;
+		for (int j = 1; j < n - 1; j++) {
+			if (index == i)break;
+			index %= n;
+			prefixMax[j] = max(prefixMax[j - 1], (a[index]));
+			index++;
 		}
-		else {
-			res[i + 1] = a[i];
-			right = i + 1;
-		}
+		debug(prefixMax);
 
-		int left = -1;
-		if (i - 1 < 0) {
-			res[n - 1] = a[n - 1];
+		suffixMax[n - 2] = a[(n + (i - 1)) % n];
+		index = (n + (i - 2)) % n;
+		for (int j = n - 3; j >= 0; j--) {
+			if (index == i)break;
+			index = (n + (index)) % n;
+			suffixMax[j] = max(suffixMax[j + 1], (a[index]));
+			index--;
 		}
-		else {
-			res[i - 1] = a[i - 1];
-			left = i - 1;
-		}
+		debug(suffixMax);
 
-		if (right < n) {
-			int mx = res[right];
-			for (int j = right; j < n - 1; j++) {
-				mx = max(mx, a[j]);
-				if (res[j + 1] == -1)
-					res[j + 1] = mx;
-			}
-		}
+		int mxP = 0;
+		int p = (i + 1) % n;
 
-
-		if (left > -1) {
-			int mx = res[left];
-			for (int j = left - 1; j >= 0; j--) {
-				mx = max(mx, a[j]);
-				res[j] = mx;
-			}
+		vector<int>answer(n);
+		answer[i] = 0;
+		for (int j = 1; j <= n - 1; j++) {
+			p %= n;
+			answer[p] = min(prefixMax[mxP], suffixMax[mxP]);
+			mxP++;
+			p++;
 		}
 
-		debug(res);
-		int ans = accumulate(res.begin(), res.end(), 0LL);
-
-		cout << ans << " ";
-
+		cout << accumulate(answer.begin(), answer.end(), 0LL) << " ";
 
 	}
 	cout << nl;
+
 }
 int32_t main()
 {
