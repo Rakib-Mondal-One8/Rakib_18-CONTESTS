@@ -32,99 +32,40 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void RakibOne8()
 {
-	int n, k;
-	cin >> n >> k;
+	int a, b, c;
+	cin >> a >> b >> c;
 
-	string s;
-	cin >> s;
-
-	string initStr = s;
-	for (int operation = 1; operation <= k; operation++) {
-		string newStr = "";
-		for (auto c : s) {
-			if (c != '0')newStr += c;
-		}
-		debug(newStr);
-
-		int m = newStr.size();
-		vector<int>opening(m);
-		vector<int>closing(m);
-
-
-		opening[0] = (newStr[0] == '(' ? 1 : 0);
-		closing[m - 1] = (newStr[m - 1] == ')' ? 1 : 0);
-
-		for (int j = 1; j < m; j++)opening[j] = opening[j - 1] + (newStr[j] == '(' ? 1 : 0);
-		for (int j = m - 2; j >= 0; j--)closing[j] = closing[j + 1] + (newStr[j] == ')' ? 1 : 0);
-		debug(opening, closing);
-
-		int oMax = INT_MIN;
-		int cMax = INT_MIN;
-
-		debug(oMax, cMax);
-
-		//closing min where o max
-		int oMin = INT_MAX;
-		int idx1 = -1;
-		for (int j = 0; j < m; j++) {
-			if (closing[j] > 0) {
-				oMax = max(oMax, opening[j]);
-				if (opening[j] == oMax) {
-					oMin = min(oMin, closing[j]);
-					idx1 = max(idx1, j);
-				}
-			}
-
-		}
-		//opening min where c max
-		int cMin = INT_MAX;
-		int idx2 = INT_MAX;
-		for (int j = 0; j < m; j++) {
-			if (opening[j] > 0) {
-				cMax = max(cMax, closing[j]);
-				if (closing[j] == cMax ) {
-					cMin = min(cMin, opening[j]);
-					idx2 = min(idx2, j);
-				}
-			}
-
-		}
-
-		debug(oMin, cMin);
-
-		//remove closing
-		if ((oMax > cMax && oMin != INT_MAX) || (oMin != INT_MAX && cMin == INT_MAX)) {
-			newStr[idx1] = '0';
-		}
-		else if ((cMax > oMax && cMin != INT_MAX) || (cMin != INT_MAX && oMin == INT_MAX)) {
-			newStr[idx2] = '0';
-		}
-		else if ((oMax == cMax) && (oMin == cMin && oMin != INT_MAX)) {
-			// remove closing
-			if (oMin > cMin) {
-				newStr[idx1] = '0';
-			}
-			else {
-				// remove opening
-				newStr[idx2] = '0';
-
-			}
-		}
-		s = newStr;
+	if (a == b) {
+		cout << 0 << nl;
+		return;
 	}
-	debug(s);
-	string answer = "";
-	for (int i = 0; i < n; i++)answer += '1';
+	debug(a, b);
 
-	int pointer = 0;
-	for (int i = 0; i < n; i++) {
-		if (s[pointer] == '0')pointer++;
-		if (s[pointer] == initStr[i]) {
-			answer[i] = '0';
-			pointer++;
+	int cnt1 = 0;
+	int x = a, y = b;
+	int  z = c;
+	while (true) {
+		x = __gcd(x, z);
+		y = __gcd(y, z);
+		cnt1++;
+		if (x == y) {
+			break;
 		}
+		debug(x, y);
+
+		z++;
+		cnt1++;
 	}
-	cout << answer << nl;
+
+	z = c;
+	int cnt2 = 1;
+	while (true) {
+		if (isPrime(z))break;
+		z++;
+		cnt2++;
+	}
+	debug(cnt2);
+	cout << min(cnt1, cnt2) << nl;
 }
 int32_t main()
 {

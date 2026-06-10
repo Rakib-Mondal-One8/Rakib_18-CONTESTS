@@ -35,96 +35,35 @@ void RakibOne8()
 	int n, k;
 	cin >> n >> k;
 
-	string s;
-	cin >> s;
+	set<int>st;
+	for (int i = 1; i <= k; i++)st.insert(i);
 
-	string initStr = s;
-	for (int operation = 1; operation <= k; operation++) {
-		string newStr = "";
-		for (auto c : s) {
-			if (c != '0')newStr += c;
-		}
-		debug(newStr);
-
-		int m = newStr.size();
-		vector<int>opening(m);
-		vector<int>closing(m);
-
-
-		opening[0] = (newStr[0] == '(' ? 1 : 0);
-		closing[m - 1] = (newStr[m - 1] == ')' ? 1 : 0);
-
-		for (int j = 1; j < m; j++)opening[j] = opening[j - 1] + (newStr[j] == '(' ? 1 : 0);
-		for (int j = m - 2; j >= 0; j--)closing[j] = closing[j + 1] + (newStr[j] == ')' ? 1 : 0);
-		debug(opening, closing);
-
-		int oMax = INT_MIN;
-		int cMax = INT_MIN;
-
-		debug(oMax, cMax);
-
-		//closing min where o max
-		int oMin = INT_MAX;
-		int idx1 = -1;
-		for (int j = 0; j < m; j++) {
-			if (closing[j] > 0) {
-				oMax = max(oMax, opening[j]);
-				if (opening[j] == oMax) {
-					oMin = min(oMin, closing[j]);
-					idx1 = max(idx1, j);
-				}
+	vector<int>player(n + 1);
+	int parity = 0;
+	while (!st.empty()) {
+		if (parity) {
+			for (int i = n; i >= 1; i--) {
+				if (st.empty())break;
+				int mx = *st.rbegin();
+				player[i] += mx;
+				st.erase(mx);
 			}
-
+			parity = 0;
 		}
-		//opening min where c max
-		int cMin = INT_MAX;
-		int idx2 = INT_MAX;
-		for (int j = 0; j < m; j++) {
-			if (opening[j] > 0) {
-				cMax = max(cMax, closing[j]);
-				if (closing[j] == cMax ) {
-					cMin = min(cMin, opening[j]);
-					idx2 = min(idx2, j);
-				}
+		else {
+			for (int i = 1; i <= n; i++) {
+				if (st.empty())break;
+				int mx = *st.rbegin();
+				player[i] += mx;
+				st.erase(mx);
 			}
-
-		}
-
-		debug(oMin, cMin);
-
-		//remove closing
-		if ((oMax > cMax && oMin != INT_MAX) || (oMin != INT_MAX && cMin == INT_MAX)) {
-			newStr[idx1] = '0';
-		}
-		else if ((cMax > oMax && cMin != INT_MAX) || (cMin != INT_MAX && oMin == INT_MAX)) {
-			newStr[idx2] = '0';
-		}
-		else if ((oMax == cMax) && (oMin == cMin && oMin != INT_MAX)) {
-			// remove closing
-			if (oMin > cMin) {
-				newStr[idx1] = '0';
-			}
-			else {
-				// remove opening
-				newStr[idx2] = '0';
-
-			}
-		}
-		s = newStr;
-	}
-	debug(s);
-	string answer = "";
-	for (int i = 0; i < n; i++)answer += '1';
-
-	int pointer = 0;
-	for (int i = 0; i < n; i++) {
-		if (s[pointer] == '0')pointer++;
-		if (s[pointer] == initStr[i]) {
-			answer[i] = '0';
-			pointer++;
+			parity = 1;
 		}
 	}
-	cout << answer << nl;
+
+	int ans = *max_element(player.begin(), player.end());
+	cout << ans << nl;
+	debug(player);
 }
 int32_t main()
 {
