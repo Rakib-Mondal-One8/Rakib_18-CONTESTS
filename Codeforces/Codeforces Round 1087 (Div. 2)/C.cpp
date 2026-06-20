@@ -32,26 +32,43 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void RakibOne8()
 {
-	int a, b, c;
-	cin >> a >> b >> c;
+	int n;
+	cin >> n;
 
-	if (a == b) {
-		cout << 0 << nl;
+	debug(n);
+
+	for (int i = 3; i <= 2 * n; i += 2) {
+		cout << "? " << i << " " << i + 1 << endl;
+
+		int res;
+		cin >> res;
+
+		if (res == 1) {
+			cout << "! " << i << endl;
+			return;
+		}
+	}
+
+
+	cout << "? " << 1 << " " << 3 << endl;
+	int res1;
+	cin >> res1;
+
+	if (res1 == 1) {
+		cout << "! " << 1 << endl;
 		return;
 	}
-	if (__gcd(a, c) == __gcd(b, c)) {
-		cout << 1 << nl;
+
+	cout << "? " << 1 << " " << 4 << endl;
+	int res2;
+	cin >> res2;
+
+	if (res2 == 1) {
+		cout << "! " << 1 << endl;
 		return;
 	}
 
-	if (__gcd(a, c + 1) == __gcd(b, c + 1)) {
-		cout << 2 << nl;
-		return ;
-	}
-
-	cout << 3 << nl;
-
-
+	cout << "! " << 2 << endl;
 }
 int32_t main()
 {

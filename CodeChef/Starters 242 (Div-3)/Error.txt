@@ -1,13 +1,1 @@
-a = 7 b = 6 
-cnt2 = 1 
-a = 14 b = 9 
-x = 1 y = 9 
-cnt2 = 3 
-a = 7 b = 6 
-x = 1 y = 2 
-cnt2 = 2 
-a = 4 b = 2 
-cnt2 = 1 
-a = 5 b = 3 
-cnt2 = 4 
 Time: 0 ms

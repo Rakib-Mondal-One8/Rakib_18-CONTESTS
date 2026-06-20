@@ -30,28 +30,46 @@ int nXOR(int n) { if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 ==
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 /*_________________________________________________________________________________________________________________________________________________________________________________________________________________________*/
 
+pair<int, int> go(int val, vector<int>&v) {
+	sort(v.begin(), v.end());
+
+	int index = -1;
+	int low = 0, high = v.size() - 1;
+
+	while (low <= high) {
+		int mid = low + (high - low) / 2;
+
+		if (v[mid] <= val) {
+			low = mid + 1;
+			index = mid;
+		}
+		else high = mid - 1;
+	}
+	int freq = upper_bound(v.begin(), v.end(), val) - lower_bound(v.begin(), v.end(), val);
+
+	return {index, freq};
+}
 void RakibOne8()
 {
-	int a, b, c;
-	cin >> a >> b >> c;
+	int n;
+	cin >> n;
 
-	if (a == b) {
-		cout << 0 << nl;
-		return;
+	vector<int>a(n);
+	for (auto &x : a)cin >> x;
+
+	for (int i = 0; i < n; i++) {
+		vector<int>b(a.begin() + i, a.end());
+
+		auto p = go(a[i], b);
+
+		int m = sz(b);
+		int big = m - (p.first + 1);
+		int less = (p.first + 1) - p.second;
+
+		if (big >= less)cout << big << " ";
+		else cout << less << " ";
 	}
-	if (__gcd(a, c) == __gcd(b, c)) {
-		cout << 1 << nl;
-		return;
-	}
-
-	if (__gcd(a, c + 1) == __gcd(b, c + 1)) {
-		cout << 2 << nl;
-		return ;
-	}
-
-	cout << 3 << nl;
-
-
+	cout << nl;
 }
 int32_t main()
 {
