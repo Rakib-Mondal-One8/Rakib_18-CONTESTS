@@ -32,89 +32,50 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void RakibOne8()
 {
-	int n, m, x, y;
-	cin >> n >> m >> x >> y;
+	int n = 3;
+	vector<int>arr(3);
+	for (int i = 0; i < n; i++)cin >> arr[i];
 
-	vector<int>a(x);
-	for (auto &v : a)cin >> v;
-	sort(a.rbegin(), a.rend());
-	vector<int>b(y);
-	for (auto &v : b)cin >> v;
-	sort(b.rbegin(), b.rend());
+	int ans = INT_MAX;
+	while (true) {
+		sort(arr.begin(), arr.end());
+		ans = min(ans, (arr[2] - arr[0]));
+		bool ok = false;
 
-	auto go = [&](int lim1, int lim2)->int{
-		int aTaken = 0, bTaken = 0;
-		int both = 0;
-		int total_lim = lim1 + lim2;
 
-		int p1 = 0 , p2 = 0;
-		int answer = 0;
-		debug(1);
-		while (p1 < x && p2 < y) {
-			debug(p1, p2);
-			if (a[p1] > b[p2] && aTaken + bTaken + both < total_lim) {
-				if (aTaken < lim1) {
-					aTaken++;
-					answer += a[p1];
-					p1++;
-				}
-				else if (bTaken < lim2) {
-					bTaken++;
-					answer += b[p2];
-					p2++;
-				}
-				else break;
-			}
-			else if (b[p2] > a[p1] && aTaken + bTaken + both < total_lim) {
-				if (bTaken < lim2) {
-					bTaken++;
-					answer += b[p2];
-					p2++;
-				}
-				else if (aTaken < lim1) {
-					aTaken++;
-					answer += a[p1];
-					p1++;
-				}
-				else break;
+		int a = arr[0];
+		int b = arr[1];
+		int c = arr[2];
 
-			}
-			else if (a[p1] == b[p2]) {
-				if (aTaken < lim1 && bTaken < lim2 && aTaken + bTaken + both < total_lim) {
-					both++;
-					answer += a[p1];
-
-				}
-				else if (aTaken < lim1 && aTaken + bTaken + both < total_lim) {
-					aTaken++;
-					answer += a[p1];
-				}
-				else if (bTaken < lim2 && aTaken + bTaken + both < total_lim) {
-					bTaken++;
-					answer += b[p2];
-				}
-				p1++;
-				p2++;
-			}
-		}
-		debug(2);
-		while (p1 < x && aTaken < lim1 && aTaken + bTaken + both < total_lim) {
-			answer += a[p1];
-			aTaken++;
-			p1++;
+		if ((a + b) < c) {
+			ok = true;
+			arr[2] = (a + b);
 		}
 
-		while (p2 < y && bTaken < lim2 && aTaken + bTaken + both < total_lim) {
-			answer += b[p2];
-			bTaken++;
-			p2++;
+		if (!ok)break;
+	}
+
+	while (true) {
+		sort(arr.begin(), arr.end());
+		ans = min(ans, (arr[2] - arr[0]));
+		bool ok = false;
+
+
+		int a = arr[0];
+		int b = arr[1];
+		int c = arr[2];
+
+		if ((b + c) - b < ans) {
+			ok = true;
+			arr[0] = b + c;
 		}
 
-		return answer;
-	};
+		if (!ok)break;
+	}
 
-	cout << max(go(n - 1, m), go(n, m - 1)) << nl;
+	cout << ans << nl;
 }
+
 int32_t main()
 {
 	init_code();

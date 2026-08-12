@@ -16,7 +16,7 @@ void init_code() {
 using namespace chrono;
 
 /*_________________________________________________________________________________________________________________________________________________________________________________________________________________________*/
-const int mod = 1e9 + 7;
+const int mod = 998244353;
 int expo(int a, int b, int mod) { int res = 1; while (b > 0) { if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1; } return res; }
 int mminvprime(int a, int b) { return expo(a, b - 2, b); }
 int inv(int i) { if (i == 1) return 1; return (mod - ((mod / i) * inv(mod % i)) % mod) % mod; }
@@ -32,88 +32,65 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void RakibOne8()
 {
-	int n, m, x, y;
-	cin >> n >> m >> x >> y;
+	int n;
+	cin >> n;
 
-	vector<int>a(x);
-	for (auto &v : a)cin >> v;
-	sort(a.rbegin(), a.rend());
-	vector<int>b(y);
-	for (auto &v : b)cin >> v;
-	sort(b.rbegin(), b.rend());
+	string s;
+	cin >> s;
 
-	auto go = [&](int lim1, int lim2)->int{
-		int aTaken = 0, bTaken = 0;
-		int both = 0;
-		int total_lim = lim1 + lim2;
+	vector<vector<vector<int>>>dp(n + 1, vector<vector<int>>(2, vector<int>(2)));
+	//Base
+	for (int j = 0; j < 2; j++) {
+		for (int k = 0; k < 2; k++) {
+			dp[n][j][k] = 1;
+		}
+	}
 
-		int p1 = 0 , p2 = 0;
-		int answer = 0;
-		debug(1);
-		while (p1 < x && p2 < y) {
-			debug(p1, p2);
-			if (a[p1] > b[p2] && aTaken + bTaken + both < total_lim) {
-				if (aTaken < lim1) {
-					aTaken++;
-					answer += a[p1];
-					p1++;
+
+	for (int i = n - 1; i >= 2; i--) {
+		for (int j = 0; j < 2; j++) { // (i-2)th color
+			for (int k = 0; k < 2; k++) { // (i-1)th color
+
+				if (j == 0) {
+					if (s[i] == '?' || s[i] == '1') {
+						dp[i][j][k] = dp[i + 1][k][1];
+					}
 				}
-				else if (bTaken < lim2) {
-					bTaken++;
-					answer += b[p2];
-					p2++;
+				if (j == 1) {
+					if (s[i] == '?' || s[i] == '0') {
+						dp[i][j][k] = dp[i + 1][k][0];
+					}
 				}
-				else break;
-			}
-			else if (b[p2] > a[p1] && aTaken + bTaken + both < total_lim) {
-				if (bTaken < lim2) {
-					bTaken++;
-					answer += b[p2];
-					p2++;
-				}
-				else if (aTaken < lim1) {
-					aTaken++;
-					answer += a[p1];
-					p1++;
-				}
-				else break;
 
 			}
-			else if (a[p1] == b[p2]) {
-				if (aTaken < lim1 && bTaken < lim2 && aTaken + bTaken + both < total_lim) {
-					both++;
-					answer += a[p1];
-
-				}
-				else if (aTaken < lim1 && aTaken + bTaken + both < total_lim) {
-					aTaken++;
-					answer += a[p1];
-				}
-				else if (bTaken < lim2 && aTaken + bTaken + both < total_lim) {
-					bTaken++;
-					answer += b[p2];
-				}
-				p1++;
-				p2++;
-			}
 		}
-		debug(2);
-		while (p1 < x && aTaken < lim1 && aTaken + bTaken + both < total_lim) {
-			answer += a[p1];
-			aTaken++;
-			p1++;
-		}
+	}
+	debug(s);
 
-		while (p2 < y && bTaken < lim2 && aTaken + bTaken + both < total_lim) {
-			answer += b[p2];
-			bTaken++;
-			p2++;
-		}
+	int answer = 0;
+	//00
+	if ((s[0] == '?' || s[0] == '0') && (s[1] == '0' || s[1] == '?')) {
+		debug(dp[2][0][0]);
+		answer += dp[2][0][0];
+	}
+	//01
+	if ((s[0] == '?' || s[0] == '0') && (s[1] == '1' || s[1] == '?')) {
+		debug(dp[2][0][1]);
+		answer += dp[2][0][1];
+	}
+	//10
+	if ((s[0] == '?' || s[0] == '1') && (s[1] == '0' || s[1] == '?')) {
+		debug(dp[2][1][0]);
+		answer += dp[2][1][0];
+	}
+	//11
+	if ((s[0] == '?' || s[0] == '1') && (s[1] == '1' || s[1] == '?')) {
+		debug(dp[2][1][1]);
+		answer += dp[2][1][1];
+	}
 
-		return answer;
-	};
+	cout << answer << nl;
 
-	cout << max(go(n - 1, m), go(n, m - 1)) << nl;
 }
 int32_t main()
 {
