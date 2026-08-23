@@ -1,13 +1,33 @@
-v1 = [ 1 ] v2 = [ 1 ] 
-turn1 = 1 turn2 = 1 
-v1 = [ 1 ] v2 = [ 2 ] 
-turn1 = 1 turn2 = 2 
-v1 = [ 4 ] v2 = [ 4 1 ] 
-turn1 = 4 turn2 = 5 
-v1 = [ 4 3 2 1 ] v2 = [ 10 1 ] 
-turn1 = 7 turn2 = 11 
-v1 = [ 4 3 2 1 ] v2 = [ 6 5 ] 
-turn1 = 7 turn2 = 7 
-v1 = [ 4 3 2 1 ] v2 = [ 7 5 ] 
-turn1 = 7 turn2 = 8 
+dams = [ 0 1 0 ] 
+root = 1 parent = -1 
+root = 2 parent = 1 
+cnt = 0 
+cnt = 1 
+dams = [ 0 1 1 1 ] 
+root = 1 parent = -1 
+root = 2 parent = 1 
+cnt = 1 
+root = 3 parent = 1 
+cnt = 1 
+cnt = 3 
+dams = [ 0 0 1 1 ] 
+root = 1 parent = -1 
+root = 2 parent = 1 
+root = 3 parent = 2 
+cnt = 1 
+cnt = 2 
+cnt = 1 
+dams = [ 0 1 0 1 0 1 0 ] 
+root = 1 parent = -1 
+root = 2 parent = 1 
+root = 3 parent = 2 
+cnt = 1 
+root = 4 parent = 2 
+cnt = 0 
+cnt = 1 
+root = 5 parent = 1 
+cnt = 1 
+root = 6 parent = 1 
+cnt = 0 
+cnt = 3 
 Time: 0 ms
