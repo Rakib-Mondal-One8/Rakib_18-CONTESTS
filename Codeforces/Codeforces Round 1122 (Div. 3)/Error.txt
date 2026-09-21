@@ -1,0 +1,7 @@
+prefix = [ 0 0 1 2 ] 
+prefix = [ 1 1 1 1 ] 
+prefix = [ 0 1 1 1 1 ] 
+prefix = [ 0 1 1 1 2 3 3 4 ] 
+prefix = [ 0 1 1 2 2 3 3 ] 
+prefix = [ 0 1 2 3 4 4 5 ] 
+Time: 0 ms
