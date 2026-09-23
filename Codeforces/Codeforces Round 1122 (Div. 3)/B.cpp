@@ -11,7 +11,10 @@ using namespace std;
 #endif
 void init_code() {
 #ifdef Rakib_18
-	freopen("Error.txt", "w", stderr);
+	if (!freopen("in.txt", "r", stdin)) {
+		cerr << "Warning: in.txt not found!\n";
+	}
+	// freopen("Error.txt", "w", stderr);
 #endif
 }
 using namespace chrono;
@@ -44,6 +47,7 @@ void RakibOne8()
 		cout << newAns << nl;
 	}
 	else cout << cur << nl;
+
 }
 int32_t main()
 {

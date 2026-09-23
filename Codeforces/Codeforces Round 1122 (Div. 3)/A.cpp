@@ -11,7 +11,10 @@ using namespace std;
 #endif
 void init_code() {
 #ifdef Rakib_18
-	freopen("Error.txt", "w", stderr);
+	if (!freopen("in.txt", "r", stdin)) {
+		cerr << "Warning: in.txt not found!\n";
+	}
+	// freopen("Error.txt", "w", stderr);
 #endif
 }
 using namespace chrono;
@@ -33,21 +36,31 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void RakibOne8()
 {
-	int n;
-	cin >> n;
+	// int n;
+	// cin >> n;
 
-	int x, y, z;
-	cin >> x >> y >> z;
+	// int x, y, z;
+	// cin >> x >> y >> z;
 
 
-	cout << n -  min(x, min(y, z)) << nl;
+	// cout << n -  min(x, min(y, z)) << nl;
+
+	vector<int>a = {1,2,3};
+	string x;
+	cin>>x;
+	cout<<x;
+	cout<<"Rakib"<<nl;
+	debug(a,2,3);
+
+
+
 }
 int32_t main()
 {
 	init_code();
 	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	auto start1 = high_resolution_clock::now();
 	while (t--)
 	{
