@@ -11,7 +11,7 @@ using namespace std;
 #endif
 void init_code() {
 #ifdef Rakib_18
-	freopen("Error.txt", "w", stderr);
+	//freopen("in.txt", "r", stdin);
 #endif
 }
 using namespace chrono;
@@ -36,31 +36,19 @@ void RakibOne8()
 	int n;
 	cin>>n;
 
+
 	vector<int>v1(n);
 	for(auto &x:v1)cin>>x;
 
-	set<int>D;
-	for(int i=0;i<n;i++){
-		int d = v1[i] - i;
-		D.insert(d);
-	}
-
-	int answer = 0;
-	map<int,int>dp;
-
-	for(auto x:D){
-		dp[x] = dp[x-1]+1;
-		answer = max(answer,dp[x]);
-	}
-
-	cout<<answer<<nl;
+	for(auto x:v1)cout<<x<<" ";
+		cout<<nl;
 }
 int32_t main()
 {
 	init_code();
 	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	auto start1 = high_resolution_clock::now();
 	while (t--)
 	{
