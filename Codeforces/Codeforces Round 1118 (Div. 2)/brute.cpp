@@ -31,60 +31,29 @@ int nXOR(int n) { if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 ==
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 /*_________________________________________________________________________________________________________________________________________________________________________________________________________________________*/
 
-vector<pair<int, int>> primeFactorization(int x, vector<int>& spf) {
-    vector<pair<int, int>>ans;
-    while (x != 1) {
-        int prime = spf[x];
-        int cnt = 0;
-        while (x % prime == 0) {
-            cnt++;
-            x /= prime;
-        }
-        ans.push_back({ prime,cnt });
-    }
-    return ans;
-}
-vector<int>ShortestPrimeFactor(int maxN){
-    vector<bool>Prime(maxN, true);
-    vector<int>spf(maxN, 1e9);
-
-    for (int i = 2; i < maxN;i++) {
-        if (Prime[i]) {
-            spf[i] = i;
-            for (int j = i * i;j < maxN;j += i) {
-                Prime[j] = false;
-                spf[j] = min(spf[j], (int)i);
-            }
-        }
-    }
-    return spf;
-}
-int maxN = 3e5+7;
-vector<int>spf = ShortestPrimeFactor(maxN);
 void RakibOne8()
 {
-	int n,x;
-	cin>>n>>x;
+	int n,m;
+	cin>>n>>m;
 
 	vector<int>v1(n);
-	vector<int>factorFreq(maxN);
-	for(auto &val:v1){
-		cin>>val;
+	for(auto &x:v1)cin>>x;
 
-		vector<pair<int,int>>factors = primeFactorization(val,spf);
-		for(auto y:factors){
-			factorFreq[y.first]+=y.second;
+	int answer = n;
+	for(int i=0;i<=m;i++){
+
+		map<int,int>mp;
+		for(auto x:v1){
+			if(x > i){
+				mp[x-i]++;
+				mp[i]++;
+			}
+			else mp[x]++;
 		}
+		for(auto [x,y]:mp)answer = max(answer,y);
 	}
-
-	vector<pair<int,int>>xFactors = primeFactorization(x,spf);
-	int answer = 0;
-	for(auto fact:xFactors){
-		answer = max(answer,factorFreq[fact.first]*fact.first);
-	}
-
 	cout<<answer<<nl;
-}
+}	
 int32_t main()
 {
 	init_code();

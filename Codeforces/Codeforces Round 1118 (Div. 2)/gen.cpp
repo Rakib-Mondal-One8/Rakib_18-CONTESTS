@@ -8,7 +8,7 @@ int rand(int low,int high){
 int32_t main(int argc, char* argv[]) {
 	srand(atoi(argv[1])); // seed passed from stress script
 	int n = rand(2,10); // small n for easy debugging
-	int x = rand(2,10);
-	cout << n << x << "\n";
-	for (int i = 0; i < n; i++) cout << rand(1,100) << " \n"[i == n-1];
+	int m = rand(2,10);
+	cout << n <<" "<< m << "\n";
+	for (int i = 0; i < n; i++) cout << rand(1,m) << " \n"[i == n-1];
 }

@@ -31,65 +31,35 @@ int nXOR(int n) { if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 ==
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 /*_________________________________________________________________________________________________________________________________________________________________________________________________________________________*/
 
-vector<pair<int, int>> primeFactorization(int x, vector<int>& spf) {
-    vector<pair<int, int>>ans;
-    while (x != 1) {
-        int prime = spf[x];
-        int cnt = 0;
-        while (x % prime == 0) {
-            cnt++;
-            x /= prime;
-        }
-        ans.push_back({ prime,cnt });
-    }
-    return ans;
-}
-vector<int>ShortestPrimeFactor(int maxN){
-    vector<bool>Prime(maxN, true);
-    vector<int>spf(maxN, 1e9);
-
-    for (int i = 2; i < maxN;i++) {
-        if (Prime[i]) {
-            spf[i] = i;
-            for (int j = i * i;j < maxN;j += i) {
-                Prime[j] = false;
-                spf[j] = min(spf[j], (int)i);
-            }
-        }
-    }
-    return spf;
-}
-int maxN = 3e5+7;
-vector<int>spf = ShortestPrimeFactor(maxN);
 void RakibOne8()
 {
-	int n,x;
-	cin>>n>>x;
+	int n,m;
+	cin>>n>>m;
 
-	vector<int>v1(n);
-	for(auto &val:v1){
-		cin>>val;
+	vector<int>v(n);
+	map<int,int>mp1;
+	for(auto &x:v){
+		cin>>x;
+		mp1[x]++;
 	}
 
-	vector<pair<int,int>>xFactors = primeFactorization(x,spf);
-	int answer = 0;
-	
-	for(auto fact:xFactors){
-		int res = 0;
-		for(auto val:v1){
-			if(__gcd(val,fact.first)==1)continue;
-			int tmp = val;
-			while(tmp > 0){
-				x = __gcd(val,fact.first);
-				if(x==1)break;
-				tmp-= x;
-				res+=x;
-			}
+	int answer = n;
+	map<int,int>mp2;
+
+	for(auto x:v){
+		if(x==1)continue;
+		if(x%2 == 0)mp2[x/2]+=2;
+		else{
+			mp2[x/2]++;
+			mp2[x/2 + 1]++;
 		}
-		answer = max(answer,res);
 	}
 
+	for(auto [x,y]:mp2){
+		answer = max(answer,y+mp1[x]);
+	}
 	cout<<answer<<nl;
+	
 }
 int32_t main()
 {

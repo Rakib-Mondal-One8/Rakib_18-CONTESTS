@@ -68,8 +68,10 @@ void RakibOne8()
 
 	vector<int>v1(n);
 	vector<int>factorFreq(maxN);
+	vector<
 	for(auto &val:v1){
 		cin>>val;
+
 
 		vector<pair<int,int>>factors = primeFactorization(val,spf);
 		for(auto y:factors){
@@ -90,7 +92,7 @@ int32_t main()
 	init_code();
 	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 	int t = 1;
-	// cin >> t;
+	// cin >> t;jj
 	auto start1 = high_resolution_clock::now();
 	while (t--)
 	{

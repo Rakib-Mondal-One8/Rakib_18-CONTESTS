@@ -33,51 +33,44 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void RakibOne8()
 {
-	int n;
-	cin>>n;
+	int n,m;
+	cin>>n>>m;
 
-	vector<int>v1(n);
+	vector<int>v(n);
 	map<int,int>mp;
-	for(auto &x:v1){
+	for(auto &x:v){
 		cin>>x;
 		mp[x]++;
 	}
+	sort(v.begin(),v.end());
 
-	vector<pair<int,int>>v2;
-	for(auto [x,y]:mp){
-		v2.push_back({x,y});
-	}
+	auto goBs = [&](int x)->int{
+		int low = 0,high = n-1;
 
-	sort(v2.begin(),v2.end());
+		int idx=-1;
+		while(low<=high){
+			int mid = low + (high - low)/2;
 
-	while(500){
-		int freq = 0;
-		for(int i=sz(v2)-1;i>=0;i--){
-			if(v2[i].second >= 1){
-				cout<<v2[i].first<<" ";
-				v2[i].second-=1;
-
-				freq+=v2[i].second;
+			if(v[mid] > x){
+				idx = mid;
+				high = mid-1;
 			}
+			else low  = mid+1;
 		}
+		return idx;
+	};
+	int answer = n;
+	for(int i=0;i<=m;i++){
 
-		if(freq == 0)break;
+		int res = goBs(i);
+		int greater = (res == -1)?0 : n-res;
+
+		answer = max(answer, greater + mp[2*i] + mp[i]);
+
 	}
 
-	cout<<nl;
-
-
-	//
-
-// 3 2 2
-// 4 4 3 2 1 1
-// 4 1 3 2 2
-// 2 1 1 1
-// 7 1 2 3 4 5 6
-// 4 3 2 1 3 3 1 2
-// 4 4 3 3 2 1 1 3
-
-
+	cout<<answer<<nl;
+	
 }
 int32_t main()
 {

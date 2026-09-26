@@ -34,35 +34,12 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 void RakibOne8()
 {
 	int n;
-	char c;
-	cin>>n>>c;
+	cin>>n;
 
-	string s;
-	cin>>s;
+	vector<int>v1(n);
+	for(auto &x:v1)cin>>x;
 
-	int ans = 0;
-	for(int i=0;i<n;i++){
-		int l = i;
-		int r = n-i-1;
-
-		if(s[l] != s[r]){
-			if(s[l] == c){
-				s[r]=c;
-				ans++;
-			}
-			else if(s[r]==c){
-				s[l]=c;
-				ans++;
-			}
-			else{
-				s[r] = c;
-				s[l] = c;
-				ans+=2;
-			}
-		}
-	}
-
-	cout<<ans<<nl;
+	cout<<__gcd(v1[0],v1[n-1])<<nl;
 }
 int32_t main()
 {
