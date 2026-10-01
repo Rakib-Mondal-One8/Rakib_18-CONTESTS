@@ -36,57 +36,25 @@ void RakibOne8()
 	int n;
 	cin>>n;
 
-	list<int>alive;
-	list<int>::iterator w[n];
-	vector<int>v(n);
-	for(int i=0;i<n;i++){
-		cin>>v[i];
+	vector<int>a(n);
+	vector<int>b(n);
 
-		w[i] = alive.insert(alive.end(),i);
-	}
+	for(int i=0;i<n;i++)cin>>a[i];
+	for(int i=0;i<n;i++)cin>>b[i];
 
-	auto nextVal = [&](list<int>::iterator &it){
-		return next(it) == alive.end()?alive.begin():next(it);
-	};
+	vector<vector<int>>dp(n,vector<int>(2));
 
-	auto prevVal = [&](list<int>::iterator &it){
-		return it == alive.begin()?--alive.end():prev(it);
-	};
+	//base
+	dp[n-1][0] = -a[n-1];
+	dp[n-1][1] = b[n-1];
 
-	auto hole = [&](list<int>::iterator &it)->bool{
-		return v[*it] <= min(v[*nextVal(it)],v[*prevVal(it)]);
-	};
+	for(int i=n-2;i>=0;i--){
+		for(int j=0;j<2;j++){
 
-	queue<int>q;{
-		int i=0;
-		for(auto it = alive.begin();it!=alive.end();++it,++i){
-			if(hole(it))q.push(i);
+			int choice1 = max(dp[i+1][0] - a[i],dp[i+1][1] - a[i]);
+			int choice2 = max(b[i] - dp[i+1][1] , b[i] - dp[i+1][])
 		}
 	}
-
-	vector<int>dead(n);
-	int answer = 0;
-	while(alive.size()>1){
-		auto i = q.front();
-		q.pop();
-
-		if(dead[i])continue;
-		dead[i] = true;
-
-		auto it = w[i];
-		answer += min(v[*nextVal(it)],v[*prevVal(it)]);
-		auto it2 = nextVal(it);
-		alive.erase(it);
-
-		it = it2;
-
-		if(hole(it))q.push(*it);
-		it = prevVal(it);
-		if(hole(it))q.push(*it);
-
-	}
-
-	cout<<answer<<nl;
 }
 int32_t main()
 {

@@ -33,60 +33,47 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void RakibOne8()
 {
-	int n;
-	cin>>n;
+	int n,k;
+	cin>>n>>k;
 
-	list<int>alive;
-	list<int>::iterator w[n];
-	vector<int>v(n);
+	vector<int>v;
+	map<int,int>mp;
+	map<int,int>exists;
 	for(int i=0;i<n;i++){
-		cin>>v[i];
+		int x;
+		cin>>x;
 
-		w[i] = alive.insert(alive.end(),i);
+		v.push_back(x);
+		mp[x]++;
+		exists[x] = 1;
 	}
+	sort(v.begin(),v.end());
 
-	auto nextVal = [&](list<int>::iterator &it){
-		return next(it) == alive.end()?alive.begin():next(it);
-	};
+	vector<int>answer;
 
-	auto prevVal = [&](list<int>::iterator &it){
-		return it == alive.begin()?--alive.end():prev(it);
-	};
-
-	auto hole = [&](list<int>::iterator &it)->bool{
-		return v[*it] <= min(v[*nextVal(it)],v[*prevVal(it)]);
-	};
-
-	queue<int>q;{
-		int i=0;
-		for(auto it = alive.begin();it!=alive.end();++it,++i){
-			if(hole(it))q.push(i);
+	for(auto val:v){
+		if(mp[val]==0)continue;
+		bool ok = true;
+		for(int i=val;i<=k;i+=val){
+			// debug(i);
+			if(!exists[i]){
+				ok =false;
+				break;
+			}
+			else mp[i]=0;
 		}
+		if(ok)answer.push_back(val);
+		else {
+			// debug(ok,val);
+			cout<<-1<<nl;
+			return;
+		}
+		// debug(answer);
 	}
 
-	vector<int>dead(n);
-	int answer = 0;
-	while(alive.size()>1){
-		auto i = q.front();
-		q.pop();
-
-		if(dead[i])continue;
-		dead[i] = true;
-
-		auto it = w[i];
-		answer += min(v[*nextVal(it)],v[*prevVal(it)]);
-		auto it2 = nextVal(it);
-		alive.erase(it);
-
-		it = it2;
-
-		if(hole(it))q.push(*it);
-		it = prevVal(it);
-		if(hole(it))q.push(*it);
-
-	}
-
-	cout<<answer<<nl;
+	cout<<answer.size()<<nl;
+	for(auto x:answer)cout<<x<<" ";
+		cout<<nl;
 }
 int32_t main()
 {
