@@ -39,36 +39,20 @@ void RakibOne8()
 	string s1,s2;
 	cin>>s1>>s2;
 
-	vector<int>one1,one2,zero1,zero2;
+	vector<int>aOdd,aEven,bOdd,bEven;
 	for(int i=1;i<=n;i++){
-		if(s1[i-1] == '1')one1.push_back(i);
-		else zero1.push_back(i);
+		if(s1[i-1]=='1'){
+			if(i%2)aOdd.push_back(i);
+			else aEven.push_back(i);
+		}
 
-		if(s2[i-1]=='1')one2.push_back(i);
-		else zero2.push_back(i);
+		if(s2[i-1]=='1'){
+			if(i%2)bOdd.push_back(i);
+			else bEven.push_back(i);
+		}
 	}
 
-	if(sz(one1)!=sz(one2)){
-		cout<<"NO"<<nl;
-		return;
-	}
-
-	int odd1 =0,even1 = 0;
-	for(int i=0;i<sz(one1);i++){
-		if(one1[i]%2)odd1++;
-		else even1++;
-	}
-
-
-	int odd2 =0,even2 = 0;
-	for(int i=0;i<sz(one2);i++){
-		if(one2[i]%2)odd2++;
-		else even2++;
-	}
-
-	
-	if(odd1==odd2 && even1 == even2)
-		cout<<"YES"<<nl;
+	if(sz(aOdd) == sz(bOdd) && sz(aEven) == sz(bEven))cout<<"YES"<<nl;
 	else cout<<"NO"<<nl;
 }
 int32_t main()

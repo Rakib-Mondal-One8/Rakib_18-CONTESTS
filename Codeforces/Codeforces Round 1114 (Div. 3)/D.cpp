@@ -33,15 +33,62 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void RakibOne8()
 {	
-	int x = 'z';
-	cout<<x<<nl;
+	int n;
+	cin>>n;
+
+	vector<int>v;
+	map<int,vector<int>>mp;
+
+	for(int i=0;i<n;i++){
+		int x;
+		cin>>x;
+
+		if(mp.find(x)==mp.end())v.push_back(x);
+		mp[x].push_back(i);
+	}
+	sort(v.begin(),v.end());
+	if(v[0]!=0){
+		cout<<-1<<nl;
+		return;
+
+	}
+
+	int curSum = 0;
+	int prevDist = 0;
+	vector<int>a(n);
+
+	for(int i=1;i<sz(v);i++){
+		int places = sz(mp[v[i-1]]);
+		int required = v[i]-curSum;
+		int val = required/places;
+		if(required%places == 0 && val > prevDist){
+			for(auto idx : mp[v[i-1]]){
+				a[idx] = val;
+			}
+			curSum+=(val*sz(mp[v[i-1]]));
+			prevDist = val;
+		}
+		else{
+			cout<<-1<<nl;
+			return;
+		}
+	}
+
+	int x = *max_element(a.begin(),a.end());
+	for(int i=0;i<n;i++){
+		if(a[i] == 0)a[i] = x+1;
+	}
+
+	for(auto y:a)cout<<y<<" ";
+		cout<<nl;
+
 }
 int32_t main()
 {
 	init_code();
 	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	auto start1 = high_resolution_clock::now();
 	while (t--)
 	{

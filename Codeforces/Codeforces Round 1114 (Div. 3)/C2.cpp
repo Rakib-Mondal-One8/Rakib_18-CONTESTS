@@ -31,39 +31,6 @@ int nXOR(int n) { if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 ==
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 /*_________________________________________________________________________________________________________________________________________________________________________________________________________________________*/
 
-
-int go(vector<int>&one1,vector<int>&one2){
-
-	vector<int>odd1,even1;
-	for(int i=0;i<sz(one1);i++){
-		if(one1[i]%2)odd1.push_back(one1[i]);
-		else even1.push_back(one1[i]);
-	}
-
-
-	vector<int>odd2,even2;
-	for(int i=0;i<sz(one2);i++){
-		if(one2[i]%2)odd2.push_back(one2[i]);
-		else even2.push_back(one2[i]);
-	}
-
-	debug(even1,even2);
-	debug(odd1,odd2);
-	if(odd1.size()==odd2.size() && sz(even1) == sz(even2)){
-		int answer = 0;
-		for(int i=0;i<sz(even1);i++){
-			int dist =abs(even1[i]-even2[i]); 
-			answer+= (dist>0)?dist-1:dist;
-		}
-		for(int i=0;i<sz(odd1);i++){
-			int dist =abs(odd1[i]-odd2[i]); 
-			answer+= (dist>0)?dist-1:dist;
-		}
-
-		return answer;
-	}
-	else return -1;
-}
 void RakibOne8()
 {
 	int n;
@@ -72,23 +39,33 @@ void RakibOne8()
 	string s1,s2;
 	cin>>s1>>s2;
 
-	vector<int>one1,one2,zero1,zero2;
+	vector<int>aOdd,aEven,bOdd,bEven;
 	for(int i=1;i<=n;i++){
-		if(s1[i-1] == '1')one1.push_back(i);
-		else zero1.push_back(i);
+		if(s1[i-1]=='1'){
+			if(i%2)aOdd.push_back(i);
+			else aEven.push_back(i);
+		}
 
-		if(s2[i-1]=='1')one2.push_back(i);
-		else zero2.push_back(i);
+		if(s2[i-1]=='1'){
+			if(i%2)bOdd.push_back(i);
+			else bEven.push_back(i);
+		}
 	}
 
-	if(sz(one1)!=sz(one2)){
-		cout<<-1<<nl;
-		return;
+	if(sz(aOdd) == sz(bOdd) && sz(aEven) == sz(bEven)){
+		int answer = 0;
+		for(int i=0;i<sz(aOdd);i++){
+			answer+=abs(aOdd[i] - bOdd[i])/2;
+		}
+		for(int i=0;i<sz(aEven);i++){
+			answer+=abs(aEven[i] - bEven[i])/2;
+		}
+
+		cout<<answer<<nl;
 	}
+	else cout<<-1<<nl;
 
-	int answer = min(go(one1,one2),go(zero1,zero2));
-	cout<<answer<<nl;
-
+	
 }
 int32_t main()
 {

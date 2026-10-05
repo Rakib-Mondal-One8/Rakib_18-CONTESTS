@@ -36,61 +36,24 @@ void RakibOne8()
 	int n;
 	cin>>n;
 
-
 	string s;
 	cin>>s;
 
-	vector<vector<int>>v;
-	bool single = false;
-	string final = "";
-	for(int i=0;i<n;i++){
-		int j=i;
-		while((j<n && s[j] == s[i])){
-			j++;
+	bool subtract1 = false,subtract2=false;
+	for(int i=1;i<n-1;i++){
+		if(s[i]!=s[i-1] && s[i]!=s[i+1]){
+			if(s[i-1] == s[i+1])subtract2 = true;
+			else subtract1 = true;
 		}
-		final+=s[i];
-		v.push_back({s[i],j-i,i});
-		if(j-i == 1 && i!=0 && i!=n-1)single = true;
-		i = j-1;
+	}	
+
+	int answer = 1;
+	for(int i=0;i<n-1;i++){
+		if(s[i]!=s[i+1])answer++;
 	}
 
-	int answer = 0;
-	int start =-1,end = -1;
-	for(int i=0;i<sz(v)-2;i++){
-		if(v[i][0] == v[i+2][0] && v[i+1][1] == 1){
-			if(v[i][1] + v[i+2][1] > answer){
-				answer = v[i][1] + v[i+2][1];
-				start = v[i][2];
-				end = v[i+2][2] + v[i+2][1] - 1;
-			}
-		}
-	}
-	cout<<answer<<nl;
-	
-	if(answer!=0){
-		string resultString = "";
-		for(int i=0;i<n;i++){
-			if(i==start){
-				resultString+=s[i];
-				i = end+1;
-
-				if(i>=n)break;
-			}
-			int j=i;
-			while((j<n && s[j] == s[i])){
-				j++;
-			}
-			resultString+=s[i];
-			i = j-1;
-		}
-
-		cout<<sz(resultString)<<nl;
-		return;
-	}
-	
-	debug(final,single);
-	cout<<sz(final)-single<<nl;
-
+	int x = subtract2?2: (subtract1?1:0);
+	cout<<answer-x<<nl;
 }
 int32_t main()
 {
