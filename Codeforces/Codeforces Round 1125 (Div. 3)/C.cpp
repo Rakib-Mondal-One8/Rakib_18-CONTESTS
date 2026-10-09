@@ -18,9 +18,10 @@ using namespace chrono;
 
 /*_________________________________________________________________________________________________________________________________________________________________________________________________________________________*/
 const int mod = 1e9 + 7;
+const int MOD = 1e9 + 7;
 int expo(int a, int b, int mod) { int res = 1; while (b > 0) { if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1; } return res; }
 int mminvprime(int a, int b) { return expo(a, b - 2, b); }
-int inv(int i) { if (i == 1) return 1; return (mod - ((mod / i) * inv(mod % i)) % mod) % mod; }
+// int inv(int i) { if (i == 1) return 1; return (mod - ((mod / i) * inv(mod % i)) % mod) % mod; }
 bool isPrime(int n) { if (n <= 1)return false; if (n <= 3)return true; if (n % 2 == 0 || n % 3 == 0)return false; for (int i = 5; i * i <= n; i += 6) { if (n % i == 0 || n % (i + 2) == 0)return false; } return true; }
 int lcm(int a, int b) { return (a / __gcd(a, b)) * b; }
 int mod_add(int a, int b, int m) { a = a % m; b = b % m; return (((a + b) % m) + m) % m; }
@@ -39,54 +40,23 @@ void RakibOne8() {
     for (auto &x : v)cin >> x;
     debug(v);
 
-
-    auto go = [&](int x, vector<int>&ending)->int{
-        if (sz(ending) == 0)return 0;
-        int low = 0, high = sz(ending);
-        int res = -1;
-        while (low < high) {
-            int mid = low + (high - low) / 2;
-            if (ending[mid] < x) {
-                res = mid;
-                low = mid + 1;
-            } else high = mid - 1;
-        }
-        debug(x, sz(ending), ending, res);
-        return res + 1;
-
-    };
-    map<int, int>mp1;
-    map<int, vector<int>>endingIndex1;
-    int notIntersect = 0;
-    for (int i = 0; i + 4 < n; i += 2) {
+    vector<int>v2;
+    map<int, int>audienceLove;
+    for (int i = 0; i + 4 < n; i ++) {
         int cur = v[i] + v[i + 2] - v[i + 4];
-        mp1[cur]++;
-
-        notIntersect += go(i, endingIndex1[cur]);
-        endingIndex1[cur].push_back(i + 4);
+        v2.push_back(cur);
+        audienceLove[cur]++;
     }
-
-
-    map<int, int>mp2;
-    map<int, vector<int>>endingIndex2;
-    for (int i = 1; i + 4 < n; i += 2) {
-        int cur = v[i] + v[i + 2] - v[i + 4];
-
-        notIntersect += go(i, endingIndex2[cur]);
-        endingIndex2[cur].push_back(i + 4);
-        mp2[cur]++;
-    }
-    debug(mp1, mp2);
-    debug(notIntersect);
-
-
 
     int answer = 0;
-    for (auto [x, y] : mp1) {
-        answer += mp2[x] * y;
+    for (auto [x, y] : audienceLove) {
+        answer += (y >= 2) ? y * (y - 1) / 2 : 0;
     }
-
-    cout << answer + notIntersect << nl;
+    for (int i = 0; i < sz(v2); i++) {
+        if (i + 2 < sz(v2) && v2[i] == v2[i + 2])answer--;
+        if (i + 4 < sz(v2) && v2[i] == v2[i + 4])answer--;
+    }
+    cout << answer << nl;
 
 }
 int32_t main() {
